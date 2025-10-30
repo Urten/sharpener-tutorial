@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Class Monitor Voting System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            padding: 8px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .vote-board {
+            margin-top: 30px;
+        }
+        .vote-board ul {
+            list-style: none;
+            padding: 0;
+        }
+        .vote-board li {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .vote-entry {
+            margin: 5px 0;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Class Monitor Voting System</h1>
+    <p>
+        Welcome to the voting system. Please cast your vote for your preferred class monitor below.
+    </p>
+
+    <form action="">
+        <label for="name">Student Name</label>
+        <input type="text" name="name">
+        
+        <label for="monitor">Choose Monitor</label>
+        <select name="monitor" id="monitor">
+            <option value="suresh">Suresh</option>
+            <option value="deepank">Deepank</option>
+            <option value="abhik">Abhik</option>
+        </select>
+
+        <button type="submit">vote</button>
+
+    </form>
+
+
+    <div class="vote-board">
+        <ul>
+            <li id="suresh">Suresh</li>
+            <li id="deepank">Deepank</li>
+            <li id="abhik">Abhik</li>
+        </ul>
+
+    </div>
+
+    <!-- Add Axios for making HTTP requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Add our main JavaScript file -->
+    <script src="index.js"></script>
+</body>
+</html>
