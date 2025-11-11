@@ -1,26 +1,61 @@
 import API from "./api.js";
+import { capitalizeFirst } from "./utils.js";
+import VoteBoard from "./voteBoard.js"
 
-const candidates = ["mahesh", "ravi", "hari"]
-
-const api = new API("https://crudcrud.com/api/aeffba1abb504d54b600012877e2d2dd/")
-
-
-let data = {}
+axios.defaults.headers.common["Content-Type"] = "application/json";
 
 
-document.addEventListener("DOMContentLoaded", async () => {
-    // console.log("DOM loaded")
+const candidates = ["mahesh", "ravi", "hari", "loki", "thor"]
 
-    // try to get the already stored data
+export const api = new API("https://crudcrud.com/api/4219dc9989f34c01bf67486deb694891/")
+
+const dummyData = {
+    _id: "1243242342424",
+    voters: [
+        "rahul",
+        "abinash",
+        "abdul"
+    ]
+}
+
+
+for(let candidate of candidates) {
+    const candidateSelection = document.querySelector(".candidate-selection")
+    const option = document.createElement("option")
+    option.value = candidate.toLowerCase()
+    option.textContent = capitalizeFirst(candidate)
+
+    candidateSelection.append(option)
+
+}
+
+
+
+const board = new VoteBoard(candidates)
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+
+    // add functionality to form submit
+
+
+    const form = document.querySelector("form")
+
+    form.addEventListener("submit", addVoter)
     
-    for (let candidate of candidates) {
-        try {
-            const res = await api.getData(candidate)
-            console.log(res)
-
-        } catch {err} {
-            console.log(err)
-            api.createEndpoint(candidate)
-        }
-    }
 })
+
+board.recountTotal()
+
+async function addVoter(event) {
+    event.preventDefault()
+    const voterName = event.target.name.value.toLowerCase()
+    const candidate = event.target.candidate.value.toLowerCase()
+
+    console.log(voterName)
+    console.log(candidate)
+
+    await board.addVoter(candidate, voterName)
+    board.recountTotal()
+}

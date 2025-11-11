@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting System</title>
-</head>
-<body>
-    <section>
-        <h1>Voting System</h1>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Voting System</title>
+		<link rel="stylesheet" href="./style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<section>
+			<h1>🎉 Choose your Monitor! 🎉</h1>
 
-        <form action="">
-            <label for="name">Student name</label>
-            <input type="text" name="name">
-            
+			<p class="total-votes"></p>
 
-            <label for="candidate">Choose your candidate</label>
-            <select name="candidate" id="vote">
-                <option value="ravi">Ravi</option>
-                <option value="gurung">Gurung</option>
-                <option value="mahesh">Mahesh</option>
-            </select>
+			<form>
+				<label for="name">Student name</label>
+				<input type="text" name="name" />
 
-            <button type="submit">Vote</button>
-        </form>
-    </section>
+				<label for="candidate">Choose your candidate</label>
+				<select
+					class="candidate-selection"
+					name="candidate"
+					id="vote"
+				></select>
 
-    <ul class="candidate-list"></ul>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="index.js"></script>
-</body>
+				<button type="submit">Vote</button>
+			</form>
+		</section>
+
+		<ul class="candidate-list"></ul>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script type="module" src="./index.js"></script>
+	</body>
 </html>

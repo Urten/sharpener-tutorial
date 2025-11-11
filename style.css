@@ -1,0 +1,105 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: space-around; */
+	align-items: center;
+	font-family: "Pixelify Sans", sans-serif;
+}
+
+button {
+	width: 8rem;
+	height: 2rem;
+	border-radius: 10px;
+}
+
+/* input {
+    width: 100%;
+} */
+
+section {
+	display: flex;
+	flex: 1/4;
+	flex-direction: column;
+	width: 90%;
+	height: 20%;
+	justify-content: space-around;
+	align-items: center;
+	padding: 1rem;
+}
+
+section h1 {
+	margin-bottom: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+form {
+	padding: 2rem;
+	background-color: bisque;
+	align-items: center;
+	display: flex;
+	justify-content: space-evenly;
+	gap: 30px;
+	border-radius: 10px;
+	border-color: black;
+	margin: 2rem;
+}
+
+form input {
+	height: 2rem;
+	border-radius: 5px;
+}
+
+.candidate-list {
+	display: flex;
+	flex-grow: inherit;
+	height: 100%;
+	width: 80%;
+	/* border-color: black; */
+	/* border-radius: 5px;
+    border-style: double; */
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+.candidate-list li {
+	width: 100%;
+	border-color: black;
+	border-radius: 1px;
+	border-style: dotted;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	padding: 1rem;
+}
+
+.voter-list {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin: 10px;
+}
+
+.voter-list li {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	width: 100%;
+	padding: 1rem;
+}
+
+.candidate-list li p {
+	border: 2px;
+	border-style: double;
+	width: 80px;
+}

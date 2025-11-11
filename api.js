@@ -3,12 +3,20 @@ export default class API {
 		this.url = url;
 	}
 
-	async createEndpoint(candidate) {
-		const payload = {
-			voters: [],
-		};
+	async addVoter(candidate, voterName) {
 		try {
-			await axios.post(this.url + candidate, payload)
+			const res = await axios.post(this.url + candidate, {voterName})
+			console.log(res.data["_id"])
+			return await res.data["_id"]
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+	async deleteVoter(candidate, id) {
+		try {
+			const res = await axios.delete(this.url + candidate + "/" + id)
+			console.log("Deleted:", res.status)
 		} catch (err) {
 			console.log(err)
 		}
@@ -16,19 +24,12 @@ export default class API {
 
 	async getData(candidate) {
 		try {
-			const res = await axios.get(this.url + candidate);
-			return res;
+			const res = await axios.get(this.url + candidate) // this should return an array
+			if (res.data.length > 0) {
+				return res.data
+			} 
 		} catch (err) {
-			console.log(err);
+				console.log(err)
 		}
 	}
-
-
-    async updateData(candidate, updatedData) {
-        try {
-            await axios.post(this.url + candidate, updatedData)
-        } catch (err) {
-            console.log(err)
-        }
-    }
 }
