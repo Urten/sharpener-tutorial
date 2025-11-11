@@ -19,6 +19,11 @@ button {
 	border-radius: 10px;
 }
 
+button:hover {
+    transform: scale(1.1);
+    transition: ease-in-out .3s;
+}
+
 /* input {
     width: 100%;
 } */
@@ -56,6 +61,11 @@ form {
 form input {
 	height: 2rem;
 	border-radius: 5px;
+}
+form input:focus {
+    transform: scale(1.3);
+    border-style: dashed;
+    transition: ease-in-out .2s;
 }
 
 .candidate-list {
