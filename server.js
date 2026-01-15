@@ -1,7 +1,10 @@
 import http from 'http'
 import querystring from 'querystring'
+import fs from 'fs'
 
 const PORT = process.env.PORT || 3000
+const MESSAGE_FILE = 'message'
+
 const server = http.createServer((req, res) => {
     res.statusCode = 200
     res.setHeader('Content-Type', 'text/html')
@@ -18,9 +21,30 @@ const server = http.createServer((req, res) => {
 
         req.on('end', () => {
             const formData = querystring.parse(body);
-            const name = formData.name;
+            const message = formData.message;
 
-            console.log('Form submitted with name:' + name)
+            console.log('Form submitted with message:' + message)
+
+            // Read existing messages
+            let messages = []
+            try {
+                if (fs.existsSync(MESSAGE_FILE)) {
+                    const data = fs.readFileSync(MESSAGE_FILE, 'utf8')
+                    messages = JSON.parse(data)
+                }
+            } catch (err) {
+                console.error('Error reading messages:', err)
+            }
+
+            // Add new message at the beginning
+            messages.unshift(message)
+
+            // Save back to file
+            try {
+                fs.writeFileSync(MESSAGE_FILE, JSON.stringify(messages, null, 2))
+            } catch (err) {
+                console.error('Error saving message:', err)
+            }
 
             res.statusCode = 302
             res.setHeader('Location', '/message')
@@ -31,12 +55,32 @@ const server = http.createServer((req, res) => {
     }
 
     if (url === '/form') {
+        // Read messages from file
+        let messages = []
+        try {
+            if (fs.existsSync(MESSAGE_FILE)) {
+                const data = fs.readFileSync(MESSAGE_FILE, 'utf8')
+                messages = JSON.parse(data)
+            }
+        } catch (err) {
+            console.error('Error reading messages:', err)
+        }
 
+        // Build HTML for messages
+        const messagesHtml = messages.length > 0
+            ? `<div style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc;">
+                <h3>Messages:</h3>
+                <ul>
+                    ${messages.map(msg => `<li>${msg}</li>`).join('')}
+                </ul>
+               </div>`
+            : '<p>No messages yet.</p>'
 
         res.end(
-            `<form method="POST" action="/submit">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name">
+            `${messagesHtml}
+            <form method="POST" action="/submit">
+                <label for="message">Message:</label>
+                <input type="text" id="message" name="message">
                 <input type="submit" value="Submit">
             </form>`
         )
