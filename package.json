@@ -1,7 +1,7 @@
 {
-  "name": "sharpener-tutorial",
+  "name": "express",
   "version": "1.0.0",
-  "description": "",
+  "description": "sharpener express tutorial",
   "homepage": "https://github.com/Urten/sharpener-tutorial#readme",
   "bugs": {
     "url": "https://github.com/Urten/sharpener-tutorial/issues"
@@ -12,14 +12,14 @@
   },
   "license": "ISC",
   "author": "",
-  "type": "module",
-  "main": "index.js",
+  "type": "commonjs",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "dependencies": {
-    "fs": "^0.0.1-security",
-    "http": "^0.0.1-security"
-  }
+    "express": "^5.2.1"
+  },
+  "devDependencies": {}
 }
