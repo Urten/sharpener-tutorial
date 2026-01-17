@@ -1,6 +1,12 @@
 const express = require('express');
 const app = express();
 
+//logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} request made to ${req.path}`);
+  next();
+});
+
 app.get('/products', (req, res) => {
   res.send('Here is the list of all products.');
 });
