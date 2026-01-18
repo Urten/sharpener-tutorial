@@ -1,10 +1,11 @@
 const productService = require('../services/productService');
+const path = require('path');
 
 const productController = {
   // GET /products: Fetch all products
   getAllProducts: (req, res) => {
-    const result = productService.getAllProducts();
-    res.send(result);
+    // Serve the HTML file from the VIEW directory
+    res.sendFile(path.join(__dirname, '../VIEW', 'index.html'));
   },
 
   // POST /products: Add a new product
