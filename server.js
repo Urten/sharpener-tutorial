@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+// Serve static files from public directory
+app.use(express.static('public'));
+
+// Parse JSON request bodies
 app.use(express.json());
 
 const userRoutes = require('./routes/userRoutes');
