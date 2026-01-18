@@ -3,8 +3,9 @@ const app = express();
 
 app.use(express.json());
 
-const studentRoutes = require('./routes/studentRoutes');
-const courseRoutes = require('./routes/courseRoutes');
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 // logging middleware
 app.use((req, res, next) => {
@@ -14,12 +15,13 @@ app.use((req, res, next) => {
 
 // Home route
 app.get('/', (req, res) => {
-  res.send('Welcome to the Student & Course Portal API!');
+  res.send('Welcome to the E-commerce API!');
 });
 
 // Routes
-app.use('/students', studentRoutes);
-app.use('/courses', courseRoutes);
+app.use('/users', userRoutes);
+app.use('/products', productRoutes);
+app.use('/cart', cartRoutes);
 
 // 404 handler
 app.use((req, res) => {
