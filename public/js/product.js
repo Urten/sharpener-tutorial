@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Get form data
             const formData = new FormData(form);
-            const productName = formData.get('productName');
+            const productName = e.target.productName.value;
             
             // Validate form data
             if (!productName || productName.trim() === '') {
@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response = await axios.post('/products', productData);
                 
                 // Handle successful response
-                if (response.data) {
-                    const product = response.data;
+                if (response.data && response.data.success) {
+                    const product = response.data.data.product;
                     alert(`Product created successfully!\n\nName: ${product.name}\nID: ${product.id}`);
                     
                     // Clear the form
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error creating product:', error);
                 
                 if (error.response && error.response.data) {
-                    alert('Error: ' + error.response.data.error);
+                    alert('Error: ' + error.response.data.message);
                 } else {
                     alert('An error occurred while creating the product. Please try again.');
                 }
