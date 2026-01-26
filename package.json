@@ -1,24 +1,25 @@
 {
-  "name": "express",
+  "name": "sharpener-tutorial",
   "version": "1.0.0",
-  "description": "sharpener express tutorial",
-  "homepage": "https://github.com/Urten/sharpener-tutorial#readme",
-  "bugs": {
-    "url": "https://github.com/Urten/sharpener-tutorial/issues"
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Urten/sharpener-tutorial.git"
   },
-  "license": "ISC",
+  "keywords": [],
   "author": "",
+  "license": "ISC",
   "type": "commonjs",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+  "bugs": {
+    "url": "https://github.com/Urten/sharpener-tutorial/issues"
   },
+  "homepage": "https://github.com/Urten/sharpener-tutorial#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mysql2": "^3.16.1"
   }
 }
