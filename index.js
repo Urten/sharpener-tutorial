@@ -1,43 +1,51 @@
 const express = require("express");
 const app = express()
-const mysql = require("mysql2")
+const mysql = require("mysql2/promise"); // Using promise-based API
+const { initializeDatabase } = require('./db/schema');
 
-const connection = mysql.createConnection({
-    host: "localhost",
-    user: "guest",
-    password: "123456",
-    database: "testdb"
+// Database configuration
+const dbConfig = {
+  host: "localhost",
+  user: "guest",
+  password: "123456",
+  database: "testdb"
+};
 
-})
+async function main() {
+  let connection;
+  try {
+    // Create connection using async/await
+    connection = await mysql.createConnection(dbConfig);
+    console.log("Connection has been created");
 
-connection.connect((err) => {
-    if (err) {
-        console.log(err)
-        return 
+    // Initialize database schema
+    await initializeDatabase(connection);
+
+    // Start server
+    app.get("/", (req, res) => {
+      res.send('Hello World')
+    });
+
+    app.listen(3000, (err) => {
+      if (err) {
+        console.error("Server failed to start:", err);
+        return;
+      }
+      console.log("Server is running on port 3000");
+    });
+
+  } catch (err) {
+    console.error("Application error:", err);
+    if (connection) {
+      try {
+        await connection.end();
+      } catch (endErr) {
+        console.error("Error closing connection:", endErr);
+      }
     }
+    process.exit(1);
+  }
+}
 
-    console.log("Connection has been created")
-
-    const creationQuery = `create table Students (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(20),
-        email VARCHAR (20)
-    )`
-
-    connection.execute(creationQuery, (err)=> {
-        if (err) {
-            console.log(err);
-            connection.end();
-            return 
-        }
-
-        console.log("Table has been created")
-    })
-})
-app.get("/", (req, res) => {
-    res.send('Hello World')
-})
-
-app.listen(3000, (err) => {
-    console.log("server is running")
-})
+// Start the application
+main();
