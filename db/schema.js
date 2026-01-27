@@ -2,8 +2,8 @@ const TABLE_DEFINITIONS = {
   Users: `
     CREATE TABLE IF NOT EXISTS Users (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(20),
-      email VARCHAR(20)
+      name VARCHAR(50),
+      email VARCHAR(255)
     )
   `,
   Buses: `
@@ -31,6 +31,14 @@ const TABLE_DEFINITIONS = {
 
 async function initializeDatabase(connection) {
   try {
+    // Drop Users table first to fix schema
+    try {
+      await connection.execute('DROP TABLE IF EXISTS Users');
+      console.log('Dropped Users table');
+    } catch (dropErr) {
+      console.error('Error dropping Users table:', dropErr.message);
+    }
+
     // Create tables individually for better error handling
     for (const [tableName, createQuery] of Object.entries(TABLE_DEFINITIONS)) {
       try {
