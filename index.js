@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const { initializeDatabase } = require('./db/service');
 const userRoutes = require('./routes/userRoutes');
+const busRoutes = require('./routes/busRoutes');
 
 // Middleware
 app.use(express.json());
@@ -15,6 +16,7 @@ async function initializeApp() {
 
     // Mount routes
     app.use('/users', userRoutes);
+    app.use('/buses', busRoutes);
 
     // Basic route
     app.get("/", (req, res) => {
