@@ -1,29 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getAllStudentsController,
-  getStudentByIdController,
-  createStudentController,
-  updateStudentController,
-  deleteStudentController
-} = require('../controllers/studentController');
+const StudentController = require('../controllers/studentController');
 
-// Middleware to parse JSON
-router.use(express.json());
+// Get all students
+router.get('/', StudentController.getAllStudents);
 
-// GET /students - Retrieve all students
-router.get('/', getAllStudentsController);
+// Get student by ID
+router.get('/:id', StudentController.getStudentById);
 
-// GET /students/:id - Retrieve a student by ID
-router.get('/:id', getStudentByIdController);
-
-// POST /students - Insert a new student
-router.post('/', createStudentController);
-
-// PUT /students/:id - Update student details
-router.put('/:id', updateStudentController);
-
-// DELETE /students/:id - Delete a student by ID
-router.delete('/:id', deleteStudentController);
+// Add a new student
+router.post('/', StudentController.createStudent);
 
 module.exports = router;
