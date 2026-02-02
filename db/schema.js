@@ -1,61 +1,92 @@
-const TABLE_DEFINITIONS = {
-  Users: `
-    CREATE TABLE IF NOT EXISTS Users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(50),
-      email VARCHAR(255)
-    )
-  `,
-  Buses: `
-    CREATE TABLE IF NOT EXISTS Buses (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      busNumber INT,
-      totalSeats INT,
-      availableSeats INT
-    )
-  `,
-  Bookings: `
-    CREATE TABLE IF NOT EXISTS Bookings (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      seatNumber INT
-    )
-  `,
-  Payments: `
-    CREATE TABLE IF NOT EXISTS Payments (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      amountPaid INT,
-      paymentStatus VARCHAR(255)
-    )
-  `
-};
+const { Sequelize, DataTypes } = require('sequelize');
 
-async function initializeDatabase(connection) {
-  try {
-    // Drop Users table first to fix schema
-    try {
-      await connection.execute('DROP TABLE IF EXISTS Users');
-      console.log('Dropped Users table');
-    } catch (dropErr) {
-      console.error('Error dropping Users table:', dropErr.message);
-    }
+const sequelize = new Sequelize('bus_booking', 'guest', '123456', {
+  host: 'localhost',
+  dialect: 'mysql'
+});
 
-    // Create tables individually for better error handling
-    for (const [tableName, createQuery] of Object.entries(TABLE_DEFINITIONS)) {
-      try {
-        await connection.execute(createQuery);
-        console.log(`Table ${tableName} created or already exists`);
-      } catch (err) {
-        console.error(`Error creating table ${tableName}:`, err.message);
-        // Continue with other tables even if one fails
-      }
-    }
-    console.log("Database initialization complete");
-  } catch (err) {
-    console.error("Database initialization failed:", err);
-    throw err;
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
-}
+}, {
+  tableName: 'Users',
+  timestamps: false
+});
+
+const Bus = sequelize.define('Bus', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  busNumber: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  totalSeats: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  availableSeats: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
+}, {
+  tableName: 'Buses',
+  timestamps: false
+});
+
+const Booking = sequelize.define('Booking', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Users',
+      key: 'id'
+    }
+  },
+  busId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Buses',
+      key: 'id'
+    }
+  },
+  seatNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
+}, {
+  tableName: 'Bookings',
+  timestamps: false
+});
+
+User.hasMany(Booking, { foreignKey: 'userId' });
+Booking.belongsTo(User, { foreignKey: 'userId' });
+
+Bus.hasMany(Booking, { foreignKey: 'busId' });
+Booking.belongsTo(Bus, { foreignKey: 'busId' });
 
 module.exports = {
-  initializeDatabase
+  sequelize,
+  User,
+  Bus,
+  Booking
 };
