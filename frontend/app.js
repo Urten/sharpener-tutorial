@@ -1,5 +1,3 @@
-const API = 'http://localhost:3000/api';
-
 const calendarView = document.getElementById('calendar-view');
 const attendanceView = document.getElementById('attendance-view');
 const reportView = document.getElementById('report-view');
@@ -8,22 +6,6 @@ function hideAll() {
   calendarView.hidden = true;
   attendanceView.hidden = true;
   reportView.hidden = true;
-}
-
-// Axios setup
-const axiosInstance = axios.create({
-  baseURL: API,
-  headers: { 'Content-Type': 'application/json' }
-});
-
-async function apiGet(path) {
-  const res = await axiosInstance.get(path);
-  return res.data;
-}
-
-async function apiPost(path, body) {
-  const res = await axiosInstance.post(path, body);
-  return res.data;
 }
 
 function showCalendar() {
@@ -50,8 +32,8 @@ async function showAttendance(date) {
   hideAll();
   attendanceView.hidden = false;
 
-  const session = await apiGet(`/attendance/session?date=${date}`);
-  const students = await apiGet('/students');
+  const session = await api.getAttendanceSession(date);
+  const students = await api.getStudents();
 
   currentSession = session;
   attendanceState = {};
@@ -102,18 +84,13 @@ async function saveAttendance() {
     })
   );
 
-  await apiPost('/attendance/mark', {
-    session_id: currentSession.id,
-    records
-  });
+  await api.saveAttendance(currentSession.id, records);
 
   alert('Attendance saved');
 }
 
 async function finalizeAttendance() {
-  await apiPost('/attendance/finalize', {
-    session_id: currentSession.id
-  });
+  await api.finalizeAttendance(currentSession.id);
 
   alert('Attendance finalized');
   showCalendar();
@@ -123,7 +100,7 @@ async function showReport() {
   hideAll();
   reportView.hidden = false;
 
-  const rows = await apiGet('/report');
+  const rows = await api.getReport();
 
   let html = `
     <h2>Attendance Report</h2>
@@ -175,10 +152,7 @@ async function addStudent() {
   }
 
   try {
-    await apiPost('/students', {
-      name,
-      roll_no: rollNo
-    });
+    await api.addStudent(name, rollNo);
 
     alert('Student added');
     showCalendar();
