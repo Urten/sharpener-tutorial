@@ -1,26 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Attendance App</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Company Review App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
+        <!-- Search Section -->
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-3">Search Company Reviews</h2>
+            <div class="flex gap-2">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Enter company name..."
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                >
+                <button 
+                    id="searchBtn"
+                    class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 transition-all duration-200 font-medium"
+                >
+                    Search
+                </button>
+            </div>
+        </div>
 
-  <nav>
-    <button onclick="showCalendar()">Calendar</button>
-    <button onclick="showReport()">Report</button>
-    <button onclick="showAddStudent()">Add Student</button>
-  </nav>
+        <hr class="border-gray-200 mb-6">
 
-  <main>
-    <div id="calendar-view"></div>
-    <div id="attendance-view" hidden></div>
-    <div id="report-view" hidden></div>
-  </main>
+        <!-- Results Section (Hidden by default) -->
+        <div id="resultsSection" class="hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-gray-800">
+                    Reviews for <span id="resultsCompanyName" class="text-blue-600">Company Name</span>
+                </h2>
+                <button 
+                    id="backToFormBtn"
+                    class="text-sm text-blue-600 hover:text-blue-800 underline"
+                >
+                    ← Back to Form
+                </button>
+            </div>
 
-  <script src="api.js"></script>
-  <script src="app.js"></script>
+            <!-- Reviews List -->
+            <div id="reviewsList" class="space-y-4 max-h-96 overflow-y-auto">
+                <!-- Review Card Template -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-yellow-500 font-bold">⭐ 4/5</span>
+                        <span class="text-gray-400 text-sm">Jan 15, 2026</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div>
+                            <span class="text-green-600 font-medium text-sm">👍 Pros:</span>
+                            <p class="text-gray-700 text-sm">Great work culture and benefits</p>
+                        </div>
+                        <div>
+                            <span class="text-red-600 font-medium text-sm">👎 Cons:</span>
+                            <p class="text-gray-700 text-sm">High pressure environment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Not Found Message (Hidden by default) -->
+            <div id="notFoundMessage" class="hidden text-center py-8">
+                <p class="text-gray-500 text-lg">❌ Company not found</p>
+                <p class="text-gray-400 text-sm mt-2">Try searching for a different company or add a new review below.</p>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div id="formSection">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Add Company Review</h1>
+            
+            <form id="reviewForm" class="space-y-4">
+                <div>
+                    <label for="companyName" class="block text-sm font-medium text-gray-700 mb-1">Company Name:</label>
+                    <input 
+                        type="text" 
+                        id="companyName" 
+                        name="companyName" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        placeholder="Enter company name"
+                    >
+                </div>
+                
+                <div>
+                    <label for="pros" class="block text-sm font-medium text-gray-700 mb-1">Pros:</label>
+                    <textarea 
+                        name="pros" 
+                        id="pros" 
+                        rows="3"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+                        placeholder="What did you like?"
+                    ></textarea>
+                </div>
+                
+                <div>
+                    <label for="cons" class="block text-sm font-medium text-gray-700 mb-1">Cons:</label>
+                    <textarea 
+                        name="cons" 
+                        id="cons" 
+                        rows="3"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+                        placeholder="What could be improved?"
+                    ></textarea>
+                </div>
+
+                <div>
+                    <label for="rating" class="block text-sm font-medium text-gray-700 mb-1">Rating:</label>
+                    <select 
+                        id="rating" 
+                        name="rating"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    >
+                        <option value="">Select rating</option>
+                        <option value="1">1 - Poor</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="3">3 - Good</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="5">5 - Excellent</option>
+                    </select>
+                </div>
+                
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-all duration-200 mt-2"
+                >
+                    Submit Review
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

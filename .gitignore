@@ -108,9 +108,6 @@ dist
 # Docusaurus cache and generated files
 .docusaurus
 
-backend/src/backend.md
-frontend/frontend.md
-
 # Serverless directories
 .serverless/
 
